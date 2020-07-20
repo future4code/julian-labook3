@@ -14,7 +14,11 @@ export const login = async(req:Request, res: Response) => {
         const user = await userDB.getUserByEmail(input.email)
 
         const hashManager = new HashManager;
-        hashManager.checkHash(input.password, user.password)
+        const isValidPassword = await hashManager.checkHash(input.password, user.password)
+
+        if(!isValidPassword){
+            throw new Error("Invalid credentials");
+        }
 
         const authenticator = new Authenticator;
         const token = authenticator.generateToken({id: user.id, name: user.name, email: user.email})
