@@ -2,7 +2,6 @@ import dotenv from 'dotenv'
 import express from 'express'
 import { AddressInfo } from 'net';
 import {routes} from './routes'
-import { UserDatabase } from './data/UserDatabase';
 
 dotenv.config()
 
