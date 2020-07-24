@@ -7,7 +7,7 @@ export class PostDatabase extends BaseDatabase{
             return await this.getConnection()
             .insert ({
                 creator_id,
-                id, 
+                id,
                 description,
                 type,
                 photo

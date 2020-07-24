@@ -1,18 +1,23 @@
 import { BaseDatabase } from "../service/BaseDatabase";
+import { User } from "../model/User";
 
 export class UserDatabase extends BaseDatabase{
-    public async signup(id:string, name: string, email: string, password: string): Promise<void>{
+    private dataToModel(data?: any): User | undefined {
+        return data && new User(data.id, data.name, data.email, data.password);
+    }
+
+    public async signup(user: User): Promise<void>{
         try {
-            return await this.getConnection().insert({id, name, email, password}).into(process.env.USER_DB_NAME)
+            return await this.getConnection().insert({id: user.getId(), name: user.getName(), email: user.getEmail(), password: user.getPassword()}).into(process.env.USER_DB_NAME)
         } catch (error) {
             throw new Error(error.sqlMessage || error.message)
         }
     }
 
-    public async getUserByEmail(email: string): Promise<any>{
+    public async getUserByEmail(email: string): Promise<User>{
         try {
             const user = await this.getConnection().select('*').from(process.env.USER_DB_NAME).where({email})
-            return user[0]
+            return this.dataToModel(user[0])
         } catch (error) {
             throw new Error(error.sqlMessage || error.message)
         }
