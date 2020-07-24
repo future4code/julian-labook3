@@ -38,4 +38,47 @@ export class PostsController {
         }
     }
 
+    public async like(req: Request, res: Response){
+        try {
+            const postBusiness = new PostBusiness();
+            await postBusiness.like(req.headers.authorization, req.body.post_id);
+
+            res.sendStatus(200);
+        } catch (error) {
+            res.status(400).send(error.message)
+        }
+    }
+
+    public async dislike(req: Request, res: Response){
+        try {
+            const postBusiness = new PostBusiness();
+            await postBusiness.dislike(req.headers.authorization, req.body.post_id);
+
+            res.sendStatus(200);
+        } catch (error) {
+            res.status(400).send(error.message)
+        }
+    }
+
+    public async comment(req: Request, res: Response){
+        try {
+            const postBusiness = new PostBusiness();
+            await postBusiness.comment(req.headers.authorization, req.params.post_id, req.body.commentText)
+
+            res.sendStatus(200);
+        } catch (error) {
+            res.status(400).send(error.message);
+        }
+    }
+
+    public async getCommentsByPostId(req: Request, res: Response){
+        try {
+            const postBusiness = new PostBusiness();
+            const comments = await postBusiness.getCommentsByPostId(req.headers.authorization, req.params.post_id)
+
+            res.status(200).send(comments);
+        } catch (error) {
+            res.status(400).send(error.message)
+        }
+    }
 }

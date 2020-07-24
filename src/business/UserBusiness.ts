@@ -7,7 +7,6 @@ import { User } from "../model/User";
 
 export class UserBusiness {
     public async signup(name: string, email: string, password: string) {
-
         if (name.trim() === "" || email.trim() === "" || password.trim() === "") {
             throw new Error("Please fill all the fields")
         }
@@ -31,7 +30,6 @@ export class UserBusiness {
     }
 
     public async login(email: string, password: string) {
-
         const userDB = new UserDatabase;
         const user = await userDB.getUserByEmail(email)
 
@@ -53,7 +51,6 @@ export class UserBusiness {
     }
 
     public async makeFriendship(token: string, user_to_follow_id: string) {
-
         const authenticator = new Authenticator();
         const authenticationData = authenticator.getData(token);
 
@@ -65,7 +62,6 @@ export class UserBusiness {
     }
 
     public async undoFriendship(token: string, user_to_unfollow_id: string) {
-
         const authenticator = new Authenticator();
         const authenticationData = authenticator.getData(token);
 
