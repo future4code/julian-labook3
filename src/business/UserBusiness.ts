@@ -7,7 +7,7 @@ import { User } from "../model/User";
 
 export class UserBusiness {
     public async signup(name: string, email: string, password: string) {
-        if (name.trim() === "" || email.trim() === "" || password.trim() === "") {
+        if (!name || !email || !password || name.trim() === "" || email.trim() === "" || password.trim() === "") {
             throw new Error("Please fill all the fields")
         }
 
@@ -30,6 +30,10 @@ export class UserBusiness {
     }
 
     public async login(email: string, password: string) {
+        if (!email || !password || email.trim() === "" || password.trim() === "") {
+            throw new Error("Please fill all the fields")
+        }
+
         const userDB = new UserDatabase;
         const user = await userDB.getUserByEmail(email)
 
@@ -54,6 +58,10 @@ export class UserBusiness {
         const authenticator = new Authenticator();
         const authenticationData = authenticator.getData(token);
 
+        if(!user_to_follow_id || user_to_follow_id.trim() === ""){
+            throw new Error("Please send the id of the user you want to follow")
+        }
+
         const friendsDb = new FriendsDatabase();
         await friendsDb.make(
             authenticationData.id,
@@ -64,6 +72,10 @@ export class UserBusiness {
     public async undoFriendship(token: string, user_to_unfollow_id: string) {
         const authenticator = new Authenticator();
         const authenticationData = authenticator.getData(token);
+
+        if(!user_to_unfollow_id || user_to_unfollow_id.trim() === ""){
+            throw new Error("Please send the id of the user you want to unfollow")
+        }
 
         const friendsDb = new FriendsDatabase()
         await friendsDb.undo(

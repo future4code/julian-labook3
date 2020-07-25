@@ -9,7 +9,7 @@ export class PostsController {
             await postBusiness.createPost(
                 req.headers.authorization, 
                 req.body.description,
-                req.body.type,
+                req.body.type || "normal",
                 req.body.photo
             )
 
@@ -29,7 +29,12 @@ export class PostsController {
         try {
 
             const postBusiness = new PostBusiness();
-            const result = await postBusiness.feed(req.headers.authorization, req.params.type);
+            const result = await postBusiness.feed(
+                req.headers.authorization, 
+                req.query.type as string, 
+                Number(req.query.limit) || 5,
+                Number(req.query.page) || 1
+            );
 
             res.status(200).send(result);
 
@@ -41,7 +46,7 @@ export class PostsController {
     public async like(req: Request, res: Response){
         try {
             const postBusiness = new PostBusiness();
-            await postBusiness.like(req.headers.authorization, req.body.post_id);
+            await postBusiness.like(req.headers.authorization, req.params.post_id);
 
             res.sendStatus(200);
         } catch (error) {
@@ -52,7 +57,7 @@ export class PostsController {
     public async dislike(req: Request, res: Response){
         try {
             const postBusiness = new PostBusiness();
-            await postBusiness.dislike(req.headers.authorization, req.body.post_id);
+            await postBusiness.dislike(req.headers.authorization, req.params.post_id);
 
             res.sendStatus(200);
         } catch (error) {
@@ -63,7 +68,7 @@ export class PostsController {
     public async comment(req: Request, res: Response){
         try {
             const postBusiness = new PostBusiness();
-            await postBusiness.comment(req.headers.authorization, req.params.post_id, req.body.commentText)
+            await postBusiness.comment(req.headers.authorization, req.params.post_id, req.body.text)
 
             res.sendStatus(200);
         } catch (error) {

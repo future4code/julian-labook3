@@ -6,8 +6,7 @@ const postsController = new PostsController();
 
 postRouter.post("/create", postsController.createPost);
 postRouter.get("/feed", postsController.feed);
-postRouter.get("/feed/:type", postsController.feed);
-postRouter.post("/like", postsController.like);
-postRouter.delete("/like", postsController.dislike);
-postRouter.post("/:post_id/comment", postsController.comment);
-postRouter.get("/:post_id/comment", postsController.getCommentsByPostId);
+postRouter.post("/like/:post_id", postsController.like);
+postRouter.delete("/like/:post_id", postsController.dislike);
+postRouter.post("/comments/:post_id", postsController.comment);
+postRouter.get("/comments/:post_id", postsController.getCommentsByPostId);

@@ -10,6 +10,10 @@ export class PostBusiness {
         const authenticator = new Authenticator();
         const authenticationData = authenticator.getData(token)
 
+        if(!description || description.trim()===""){
+            throw new Error("You need to send an description for your post")
+        }
+
         const idGenerator = new IdGenerator();
         const id = idGenerator.generate();
 
@@ -23,31 +27,28 @@ export class PostBusiness {
         )
     }
 
-    public async feed(token: string, type?:string) {
+    public async feed(token: string, type?:string, limit?: number, page?: number) {
         const authenticator = new Authenticator;
         const userData = authenticator.getData(token)
 
-        const postDatabase = new PostDatabase
-        const data = await postDatabase.getFeed(userData.id);
+        let data = null;
 
+        const postDatabase = new PostDatabase
+        if(!type){
+            data = await postDatabase.getAllFeed(userData.id, limit, page);
+        }
+        else if(type==="normal" || type ==="event"){
+            data = await postDatabase.getFiltteredFeed(userData.id, type, limit, page);
+        }
+        else{
+            throw new Error("Invalid type");
+        }
 
         data.forEach((post: any) => {
             post.createdAt = moment(post.createdAt).format("DD/MM/YYYY")
         })
 
-        if (!type) {
-            console.log(data)
-            return data;
-        }
-        else if (type === "normal" || type === "event") {
-            const novoArray = data.filter((post: any) => {
-                return post.type === type
-            })
-            return novoArray;
-        }
-        else {
-            throw new Error("Invalid parameter");
-        }
+        return data;
     }
 
     public async like(token: string, post_id: string){
@@ -68,7 +69,11 @@ export class PostBusiness {
 
     public async comment(token: string, post_id: string, text: string){
         const authenticator = new Authenticator();
-        const authenticationData = authenticator.getData(token)
+        const authenticationData = authenticator.getData(token);
+
+        if(!text || text.trim()===""){
+            throw new Error("You need to send an text for your comment")
+        }
 
         const idGenerator = new IdGenerator();
         const id = idGenerator.generate();
