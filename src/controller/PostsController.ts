@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import { PostBusiness } from "../business/PostBusiness";
+import { BaseDatabase } from "../service/BaseDatabase";
 
-export class PostsController {
+export class PostsController extends BaseDatabase {
 
     public async createPost(req: Request, res: Response) {
         try {
@@ -23,6 +24,7 @@ export class PostsController {
 
             })
         }
+        this.destroyConnection();
     }
 
     public async feed(req: Request, res: Response) {
@@ -41,6 +43,7 @@ export class PostsController {
         } catch (error) {
             res.status(400).send(error.message)
         }
+        this.destroyConnection();
     }
 
     public async like(req: Request, res: Response){
@@ -52,6 +55,7 @@ export class PostsController {
         } catch (error) {
             res.status(400).send(error.message)
         }
+        this.destroyConnection();
     }
 
     public async dislike(req: Request, res: Response){
@@ -63,6 +67,7 @@ export class PostsController {
         } catch (error) {
             res.status(400).send(error.message)
         }
+        this.destroyConnection();
     }
 
     public async comment(req: Request, res: Response){
@@ -74,6 +79,7 @@ export class PostsController {
         } catch (error) {
             res.status(400).send(error.message);
         }
+        this.destroyConnection();
     }
 
     public async getCommentsByPostId(req: Request, res: Response){
@@ -85,5 +91,6 @@ export class PostsController {
         } catch (error) {
             res.status(400).send(error.message)
         }
+        this.destroyConnection();
     }
 }

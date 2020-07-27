@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
 import { UserBusiness } from '../business/UserBusiness';
+import { BaseDatabase } from '../service/BaseDatabase';
 
-export class UserController {
+export class UserController extends BaseDatabase {
 
     public async signup(req: Request, res: Response) {
         try {
@@ -13,6 +14,7 @@ export class UserController {
         } catch (error) {
             res.status(400).send({ message: error.message })
         }
+        this.destroyConnection();
     }
 
     public async login(req: Request, res: Response) {
@@ -24,6 +26,7 @@ export class UserController {
         } catch (error) {
             res.status(400).send({ message: error.message })
         }
+        this.destroyConnection();
     }
 
     public async makeFriendship(req: Request, res: Response) {
@@ -36,6 +39,7 @@ export class UserController {
         } catch (error) {
             res.status(400).send({ message: error.message })
         }
+        this.destroyConnection();
     }
 
     public async undoFriendship(req: Request, res: Response) {
@@ -48,5 +52,6 @@ export class UserController {
         } catch (error) {
             res.status(400).send({ message: error.message })
         }
+        this.destroyConnection();
     }
 }
