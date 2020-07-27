@@ -6,5 +6,4 @@ import { postRouter } from './PostRouter';
 export const routes = Router();
 
 routes.use("/user", userRoutes);
-routes.use("/posts", postRouter);
-
+routes.use("/post", postRouter);
